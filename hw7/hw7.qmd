@@ -100,61 +100,16 @@ The project involves creating a database to manage the skills, certifications, a
 ```{mermaid}
 %%| echo: false
 erDiagram
-    SKILLS {
-        id INT
-        name VARCHAR(255)
-        description TEXT
-        tag VARCHAR(50)
-        url VARCHAR(255)
-        time_commitment INT
-    }
-    PEOPLE {
-        people_id INT
-        people_first_name VARCHAR(50)
-        people_last_name VARCHAR(256)
-        email VARCHAR(255)
-        linkedin_url VARCHAR(255)
-        headshot_url VARCHAR(255)
-        discord_handle VARCHAR(255)
-        brief_bio TEXT
-        date_joined VARCHAR(255)
-    }
-    PEOPLESKILLS {
-        id INT
-        skills_id INT
-        people_id INT
-        date_acquired VARCHAR(255)
-    }
-    ROLES {
-        id INT
-        name VARCHAR(255)
-        sort_priority INT
-    }
-    PEOPLESROLES {
-        id INT
-        people_id INT
-        role_id INT
-        date_assigned DATE
-    }
-
-    CUSTOMER {
+    CUSTOMER ||--o{ ORDER : places
+    CUSTOMER }|..|{ DELIVERY-ADDRESS : uses
+    CUSTOMER{
         int id
         string first_name
         string last_name
-    } ||--o{ ORDER : places
-    CUSTOMER }|..|{ DELIVERY-ADDRESS : uses
+    }
     DELIVERY-ADDRESS {
         int id
-        string street
-        string city
-        string postal_code
     }
-
-    PEOPLE ||--o{ PEOPLESKILLS : has
-    SKILLS ||--o{ PEOPLESKILLS : includes
-    PEOPLE ||--o{ PEOPLESROLES : has
-    ROLES ||--o{ PEOPLESROLES : includes
-
 ```
 
 ## Examples of data in the database
