@@ -1,6 +1,6 @@
 ---
 title: Homework 7 - Creating a resume database
-author: (your name goes here!)
+author: Anisha Vijay
 date: last-modified
 format:
     html:
@@ -10,11 +10,10 @@ format:
         code-copy: true
 ---
 
-(include a brief description of what is in this document)
+The project involves creating a database to manage the skills, certifications, and roles of employees in a company led by a group of designers and developers. The goal is to identify specific skills, list employee skills, and pinpoint skill gaps in roles. The schema includes tables for skills, people, roles, peopleskills, and peopleroles. Skills and certifications are detailed with names, descriptions, URLs, and time commitments. Employee information includes names, contact details, and a brief bio. Roles are defined with names and priorities. The database maintains associations between skills and employees, as well as between employees and roles, capturing acquisition dates and anticipated skill acquisition dates.
 
-(Please clean up any comments that I included.  This is a scaffold document.)
 
-GITHUB URL:  <your URL goes here!>
+GITHUB URL:  https://github.com/cmsc-vcu/cmsc508-fa2023-hw7-Anisha2608/tree/main
 
 ```{python}
 #| eval: true
@@ -34,10 +33,10 @@ from IPython.display import display, Markdown
 
 # modify config_map to reflect credentials needed by this program
 config_map = {
-    'user':'CMSC508_USER',
-    'password':'CMSC508_PASSWORD',
-    'host':'CMSC508_HOST',
-    'database':'HW7_DB_NAME'
+    'user':'23FA_vijaykumaa',
+    'password':'Shout4_vijaykumaa_GOME',
+    'host':'cmsc508.com',
+    'database':'23FA_hr_vijaykumaa'
 }
 # load and store credentials
 load_dotenv()
@@ -92,7 +91,7 @@ except Exception as e:
 
 ## Overview and description
 
-(briefly describe the project and the database)
+The project involves creating a database to manage the skills, certifications, and roles of employees in a company led by a group of designers and developers. The goal is to identify specific skills, list employee skills, and pinpoint skill gaps in roles. The schema includes tables for skills, people, roles, peopleskills, and peopleroles. Skills and certifications are detailed with names, descriptions, URLs, and time commitments. Employee information includes names, contact details, and a brief bio. Roles are defined with names and priorities. The database maintains associations between skills and employees, as well as between employees and roles, capturing acquisition dates and anticipated skill acquisition dates.
 
 ## Crows-foot diagram
 
@@ -201,29 +200,138 @@ df
 
 ### List people names and email addresses ordered by last_name
 
+SELECT people_first_name, people_last_name, email FROM people ORDER BY people_last_name;
+
+John
+Person 1
+john@example.com
+
+Eva1
+Person 10
+eva@example.com
+	
+
+Jane
+Person 2
+jane@example.com
+	
+
+Bob
+Person 3
+bob@example.com
+	
+
+Alice
+Person 4
+alice@example.com
+	
+
+Charlie
+Person 5
+charlie@example.com
+	
+
+Eva
+Person 6
+eva@example.com
+	
+
+Bob1
+Person 7
+bob@example.com
+	
+
+Alice1
+Person 8
+alice@example.com
+	
+
+Charlie1
+Person 9
+charlie@example.com
 
 ### List skill names of Person 1
+
+SELECT s.name AS skill_name
+FROM people p
+JOIN peopleskills ps ON p.people_id = ps.people_id
+JOIN skills s ON ps.skills_id = s.id
+WHERE p.people_id = 1;
 
 
 ### List people names with Skill 6
 
+SELECT p.people_first_name, p.people_last_name
+FROM people p
+JOIN peopleskills ps ON p.people_id = ps.people_id
+JOIN skills s ON ps.skills_id = s.id
+WHERE s.tag = 'Skill 6';
+
 
 ### List people with a DEVELOPER role
+
+SELECT p.people_first_name, p.people_last_name
+FROM people p
+JOIN peopleroles pr ON p.people_id = pr.people_id
+JOIN roles r ON pr.role_id = r.id
+WHERE r.name = 'Developer';
 
 
 ### List names and email addresses of people without skills
 
+SELECT people_first_name, people_last_name, email
+FROM people p
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM peopleskills ps
+    WHERE p.people_id = ps.people_id
+);
+
 
 ### List names and tags of unused skills
+
+SELECT name, tag
+FROM skills s
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM peopleskills ps
+    WHERE s.id = ps.skills_id
+);
 
 
 ### List people names and skill names with the BOSS role
 
+Jane
+Person 2
+Problem-solving Sensei
+Jane
+Person 2
+C# Infiltrator
+Jane
+Person 2
+Ruby Alchemist
+
+SELECT p.people_first_name, p.people_last_name, s.name AS skill_name
+FROM people p
+JOIN peopleroles pr ON p.people_id = pr.people_id
+JOIN roles r ON pr.role_id = r.id
+LEFT JOIN peopleskills ps ON p.people_id = ps.people_id
+LEFT JOIN skills s ON ps.skills_id = s.id
+WHERE r.name = 'Boss';
+
 
 ### List ids and names of unused roles
+
+SELECT id, name
+FROM roles r
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM peopleroles pr
+    WHERE r.id = pr.role_id
+);
 
 
 ## Reflection
 
-(Write a paragraph expressing your thoughts, feelings, and insights about your experience with this assignment.  Pause and breath before writing - I'm trying to encourage critical thinking and self-awareness while allowing you to explore the connections between theory and practice. And yes, delete this paragraph.)
+SQL assignment was an enriching learning experience. It provided me with a platform to put theoretical database concepts into practice. Designing the schema required thoughtful consideration of primary keys, foreign keys, and relationships between tables. The insertion of sample data allowed me to visualize how a real-world database might look. Writing SQL queries, especially those involving joins and filtering, reinforced my understanding of data retrieval and manipulation. I found value in the task of identifying unused roles, as it required a careful examination of the relationships between different tables. Overall, this assignment not only improved my SQL skills but also deepened my appreciation for the connection between theoretical knowledge and its practical implementation in database design and querying.
 
